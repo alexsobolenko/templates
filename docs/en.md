@@ -1,16 +1,16 @@
-# BOOK-STORAGE
+# BOOK-STORAGE 🇬🇧
 
-## Goal
+## 🎯 Goal
 
 Create a reference web application template with authentication, roles, CRUD logic, and a Docker environment, which can be used as a starting point for projects using different technologies.
 
-## Overview
+## 📖 Overview
 
 A website with a list of books. User authentication and registration with email confirmation are required. Models (entities) — book, author, user. Unauthenticated users can view lists of authors and books and their details. Authenticated users can add books and authors to favorites. Authenticated users with administrator rights can add new authors, books, and users.
 
-## General Requirements
+## ⚙️ General Requirements
 
-### Backend
+### 🖥️ Backend
 
 The project is implemented in multiple variants, each following the same data model and business logic, but using idiomatic approaches of the chosen technology stack. Implementation options:
 * Custom MVC on pure PHP 8.5
@@ -20,7 +20,7 @@ The project is implemented in multiple variants, each following the same data mo
 * Ruby on Rails
 * Golang
 
-### Docker Compose Platform
+### 🐳 Docker Compose Platform
 
 * `web` (required: PHP / Ruby / Go)
 * `db` (optional: MySQL / PostgreSQL; SQLite does not require a separate container)
@@ -28,17 +28,17 @@ The project is implemented in multiple variants, each following the same data mo
 * `mailcatcher` (only for dev environment)
 * `redis` (optional, if needed for sessions / cache)
 
-### Database (DBMS)
+### 🗄️ Database (DBMS)
 
 * MySQL / MariaDB
 * PostgreSQL
 * SQLite3
 
-### Frontend
+### 🌐 Frontend
 
 Server-side rendering (PHP / ERB / Twig / Blade / Go templates), CSS without build tools, JavaScript only for UX enhancements (no SPA).
 
-### Security
+### 🔒 Security
 
 * Registration
 * Email verification
@@ -49,15 +49,15 @@ Server-side rendering (PHP / ERB / Twig / Blade / Go templates), CSS without bui
 * Password reset
 * Rate-limiting
 
-### Favorites
+### ⭐ Favorites
 
 Authenticated users can save books and authors as favorites.
 
-### Admin Panel
+### 🛠️ Admin Panel
 
 CRUD operations for books, authors, and users are available only to authenticated users with administrator rights.
 
-## Database Table Structure
+## 📊 Database Table Structure
 
 The base database structure defines the minimally required data model. In specific implementations, schema changes are allowed due to framework or language features (for example, Symfony roles system, Laravel built-in mechanisms, Rails conventions) or DBMS peculiarities, provided that equivalent business logic is maintained.
 
@@ -105,8 +105,8 @@ The base database structure defines the minimally required data model. In specif
 
 | Field | Type | Required | Index / Constraints |
 |---|---|---|---|
-| `book_id` | `BIGINT` / `UUID v7 BINARY` | да | FK + INDEX |
-| `author_id` | `BIGINT` / `UUID v7 BINARY` | да | FK + INDEX |
+| `book_id` | `BIGINT` / `UUID v7 BINARY` | yes | FK + INDEX |
+| `author_id` | `BIGINT` / `UUID v7 BINARY` | yes | FK + INDEX |
 
 #### Constraints
 
@@ -118,8 +118,8 @@ The base database structure defines the minimally required data model. In specif
 
 | Field | Type | Required | Index / Constraints |
 |---|---|---|---|
-| `book_id` | `BIGINT` / `UUID v7 BINARY` | да | FK + INDEX |
-| `user_id` | `BIGINT` / `UUID v7 BINARY` | да | FK + INDEX |
+| `book_id` | `BIGINT` / `UUID v7 BINARY` | yes | FK + INDEX |
+| `user_id` | `BIGINT` / `UUID v7 BINARY` | yes | FK + INDEX |
 
 #### Constraints
 * PK (`book_id`, `user_id`)
@@ -130,8 +130,8 @@ The base database structure defines the minimally required data model. In specif
 
 | Field | Type | Required | Index / Constraints |
 |---|---|---|---|
-| `author_id` | `BIGINT` / `UUID v7 BINARY` | да | FK + INDEX |
-| `user_id` | `BIGINT` / `UUID v7 BINARY` | да | FK + INDEX |
+| `author_id` | `BIGINT` / `UUID v7 BINARY` | yes | FK + INDEX |
+| `user_id` | `BIGINT` / `UUID v7 BINARY` | yes | FK + INDEX |
 
 #### Constraints
 
@@ -139,7 +139,7 @@ The base database structure defines the minimally required data model. In specif
 * UNIQUE (`user_id`, `author_id`)
 * ON DELETE CASCADE
 
-## Repository
+## 📁 Repository
 
 Each branch of the repository represents an independent starter project template, intended for direct use in development. The master branch contains generalized documentation describing concepts, requirements, and differences between implementations.
 
