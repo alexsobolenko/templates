@@ -96,7 +96,7 @@
 |---|---|---|---|
 | `id` | `BIGINT` / `UUID v7 BINARY` | 是 | PK |
 | `title` | `VARCHAR(255)` | 是 | INDEX |
-| `price` | `INTEGER` | 否 | - |
+| `price` | `INTEGER` | 是 | - |
 | `preview` | `TEXT` | 否 | - |
 | `created_at` | `TIMESTAMP` / `DATETIME_IMMUTABLE` | 是 | INDEX |
 | `updated_at` | `TIMESTAMP` / `DATETIME_IMMUTABLE` | 是 | - |
@@ -110,8 +110,8 @@
 
 #### 约束
 
-* PK (book_id, author_id)
-* UNIQUE (book_id, author_id)
+* PK (`book_id`, `author_id`)
+* UNIQUE (`book_id`, `author_id`)
 * ON DELETE CASCADE
 
 ### `user_book_favs` (多对多)
@@ -123,8 +123,8 @@
 
 #### 约束
 
-* PK (book_id, user_id)
-* UNIQUE (book_id, user_id)
+* PK (`book_id`, `user_id`)
+* UNIQUE (`book_id`, `user_id`)
 * ON DELETE CASCADE
 
 ### `user_author_favs` (多对多)
@@ -136,8 +136,8 @@
 
 #### 约束
 
-* PK (author_id, user_id)
-* UNIQUE (author_id, user_id)
+* PK (`author_id`, `user_id`)
+* UNIQUE (`author_id`, `user_id`)
 * ON DELETE CASCADE
 
 ## 📁 仓库分支
