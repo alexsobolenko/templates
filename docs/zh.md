@@ -1,34 +1,38 @@
-# BOOK-STORAGE 🇨🇳
+# TODO-LIST 🇨🇳
 
 ## 🎯 目标
 
-创建一个参考网页应用模板，具有身份验证、角色管理、CRUD逻辑和 Docker 环境，可作为使用不同技术栈项目的起点。
+创建一个带有身份认证、角色、CRUD 逻辑和 Docker 环境的参考 Web 应用模板，可作为使用不同技术的项目起点。
 
-## 📖 概述
+模板的业务领域应尽可能简单：用户管理自己的任务列表。这样可以专注于典型项目结构、安全性、运行环境、迁移、测试以及所选技术栈的惯用实现，而不让领域模型变复杂。
 
-一个显示书籍列表的网站。需要用户注册和登录，并通过邮件进行验证。模型（实体）：书籍、作者、用户。未登录用户可以查看作者和书籍列表及其详细信息。登录用户可以将书籍和作者添加到收藏夹。拥有管理员权限的用户可以添加新的作者、书籍和用户。
+## 📖 大致说明
+
+一个任务列表网站。需要身份认证和注册，并发送电子邮件。模型（实体）- 用户和任务。
+
+未认证用户可以注册、登录、确认邮箱并重置密码。已认证用户可以查看、创建、编辑、完成和删除自己的任务。拥有管理员权限的已认证用户可以管理用户并查看所有用户的任务。
 
 ## ⚙️ 通用要求
 
 ### 🖥️ 后端
 
-该项目有多种实现，每种实现遵循相同的数据模型和业务逻辑，但使用所选技术栈的惯用方法。实现选项：
-* 自定义 MVC（纯 PHP 8.5）
-* Symfony 
+项目实现为多个变体，每个变体遵循相同的领域模型和业务逻辑，但使用所选技术栈的惯用方式。实现选项：
+* 纯 PHP 8.5 自定义 MVC
+* Symfony
 * Laravel
 * Yii2
-* Ruby on Rails 
+* Ruby on Rails
 * Golang
 
 ### 🐳 Docker Compose 平台
 
-* `web` （必需：PHP / Ruby / Go）
-* `db` （可选：MySQL / PostgreSQL；SQLite 不需要单独容器）
-* `nginx` （必需）
-* `mailcatcher` （仅用于开发环境）
-* `redis` （可选，如需用于会话/缓存）
+1. `web`（必需 php/ruby/go）
+2. `db`（可选 mysql/postgres，因为 SQLite 不需要单独容器）
+3. `nginx`（必需）
+4. `mailcatcher`（仅用于 dev 环境）
+5. `redis`（按需可选，会话/缓存）
 
-### 🗄️ 数据库
+### 🗄️ DBMS
 
 * MySQL / MariaDB
 * PostgreSQL
@@ -36,30 +40,39 @@
 
 ### 🌐 前端
 
-服务端渲染（PHP / ERB / Twig / Blade / Go templates），CSS 无构建工具，JavaScript 仅用于提升用户体验（非 SPA）。
+服务端渲染（PHP / ERB / Twig / Blade / Go templates），CSS 不使用构建工具，JavaScript 仅用于改善 UX（非 SPA）。
 
 ### 🔒 安全
 
 * 注册
-* 邮件验证
+* 邮箱确认
 * 管理员角色
 * 密码哈希
-* CSRF 保护
+* CSRF
 * XSS 保护
-* 密码重置
-* 速率限制（Rate-limit）
+* Reset password
+* Rate-limit
+* 检查任务是否属于当前用户
 
-### ⭐ 收藏
+### ✅ 任务
 
-登录用户可以将书籍和作者添加到收藏夹。
+已认证用户只能管理自己的任务：
 
-### 🛠️ 管理面板
+* 查看自己的任务列表
+* 创建任务
+* 编辑任务
+* 将任务标记为已完成或未完成
+* 删除任务
 
-书籍、作者和用户的 CRUD 操作仅对拥有管理员权限的登录用户开放。
+### 🛠️ 管理员面板
+
+用户 CRUD 操作仅对拥有管理员权限的已认证用户开放。
+
+管理员还可以查看所有用户的任务。在具体实现中，如果界面清楚体现这一点且不违反基础业务逻辑，则允许通过管理员面板编辑其他用户的任务。
 
 ## 📊 数据库表结构
 
-最小数据库结构如下，可在具体实现中根据框架或 DBMS 特性进行调整，但必须保持等效的业务逻辑。
+基础数据库结构描述最小必要的领域模型。在具体实现中，可以根据框架、语言特性（例如 Symfony 的角色系统、Laravel 内置机制、Rails 约定）或 DBMS 的特点调整 schema，但必须保持等价的业务逻辑。
 
 ### `users`
 
@@ -75,91 +88,50 @@
 | `created_at` | `TIMESTAMP` / `DATETIME_IMMUTABLE` | 是 | INDEX |
 | `updated_at` | `TIMESTAMP` / `DATETIME_IMMUTABLE` | 是 | - |
 
-#### Notes
+#### 备注
+* `is_admin` 是角色机制的极简替代方案。
+* 在 Symfony/Laravel 中可以替换为 roles 机制。
+* 密码只能是哈希，不能有任何 plaintext，即使是“示例”也不可以。
+* 如果框架提供现成的用户模型，可以使用它，但必须保留注册、邮箱确认、密码重置和管理员角色的要求。
 
-* `is_admin` 是一个简化的角色系统替代方案。
-* 在 Symfony / Laravel 中，它可以被内置的 roles 机制替代。
-* 密码必须只存储为哈希值；不允许存储明文密码。
-
-### `authors`
-
-| 字段 | 类型 | 必填 | 索引 / 约束 |
-|---|---|---|---|
-| `id` | `BIGINT` / `UUID v7 BINARY` | 是 | PK |
-| `name` | `VARCHAR(255)` | 是 | INDEX |
-| `created_at` | `TIMESTAMP` / `DATETIME_IMMUTABLE` | 是 | INDEX |
-| `updated_at` | `TIMESTAMP` / `DATETIME_IMMUTABLE` | 是 | - |
-
-### `books`
+### `tasks`
 
 | 字段 | 类型 | 必填 | 索引 / 约束 |
 |---|---|---|---|
 | `id` | `BIGINT` / `UUID v7 BINARY` | 是 | PK |
+| `user_id` | `BIGINT` / `UUID v7 BINARY` | 是 | FK + INDEX |
 | `title` | `VARCHAR(255)` | 是 | INDEX |
-| `price` | `INTEGER` | 是 | - |
-| `preview` | `TEXT` | 否 | - |
+| `description` | `TEXT` | 否 | - |
+| `is_completed` | `BOOLEAN` | 是 | INDEX |
+| `due_at` | `TIMESTAMP` / `DATETIME_IMMUTABLE` | 否 | INDEX |
 | `created_at` | `TIMESTAMP` / `DATETIME_IMMUTABLE` | 是 | INDEX |
 | `updated_at` | `TIMESTAMP` / `DATETIME_IMMUTABLE` | 是 | - |
 
-### `book_author_relations` (多对多)
-
-| 字段 | 类型 | 必填 | 索引 / 约束 |
-|---|---|---|---|
-| `book_id` | `BIGINT` / `UUID v7 BINARY` | 是 | FK + INDEX |
-| `author_id` | `BIGINT` / `UUID v7 BINARY` | 是 | FK + INDEX |
-
 #### 约束
 
-* PK (`book_id`, `author_id`)
-* UNIQUE (`book_id`, `author_id`)
+* FK (`user_id`) → `users.id`
 * ON DELETE CASCADE
 
-### `user_book_favs` (多对多)
+## 📁 仓库
 
-| 字段 | 类型 | 必填 | 索引 / 约束 |
-|---|---|---|---|
-| `book_id` | `BIGINT` / `UUID v7 BINARY` | 是 | FK + INDEX |
-| `user_id` | `BIGINT` / `UUID v7 BINARY` | 是 | FK + INDEX |
+仓库的每个分支都是一个独立的项目起始模板，可直接用于开发。master 分支包含通用文档，用于描述概念、要求以及不同实现之间的差异。
 
-#### 约束
-
-* PK (`book_id`, `user_id`)
-* UNIQUE (`book_id`, `user_id`)
-* ON DELETE CASCADE
-
-### `user_author_favs` (多对多)
-
-| 字段 | 类型 | 必填 | 索引 / 约束 |
-|---|---|---|---|
-| `author_id` | `BIGINT` / `UUID v7 BINARY` | 是 | FK + INDEX |
-| `user_id` | `BIGINT` / `UUID v7 BINARY` | 是 | FK + INDEX |
-
-#### 约束
-
-* PK (`author_id`, `user_id`)
-* UNIQUE (`author_id`, `user_id`)
-* ON DELETE CASCADE
-
-## 📁 仓库分支
-
-每个分支代表一个独立的可用模板项目。master 分支包含通用文档，描述概念、需求和不同实现之间的差异。
-
-* `master` – Documentation
-* `php-mysql` – PHP 纯实现 + MySQL
-* `php-postgres` – PHP 纯实现 + PostgreSQL
-* `php-sqlite` – PHP 纯实现 + SQLite
-* `symfony-mysql` – Symfony + MySQL
-* `symfony-postgres` – Symfony + PostgreSQL
-* `symfony-sqlite` – Symfony + SQLite
-* `yii2-mysql` – Yii2 + MySQL
-* `yii2-postgres` – Yii2 + PostgreSQL
-* `yii2-sqlite` – Yii2 + SQLite
-* `laravel-mysql` – Laravel + MySQL
-* `laravel-postgres` – Laravel + PostgreSQL
-* `laravel-sqlite` – Laravel + SQLite
-* `ruby-mysql` – Ruby on Rails + MySQL
-* `ruby-postgres` – Ruby on Rails + PostgreSQL
-* `ruby-sqlite` – Ruby on Rails + SQLite
-* `go-mysql` – Golang + MySQL
-* `go-postgres` – Golang + PostgreSQL
-* `go-sqlite` – Golang + SQLite
+* `master` - 文档、说明
+* `php-mysql` - 纯 PHP + MySQL
+* `php-postgres` - 纯 PHP + PostgreSQL
+* `php-sqlite` - 纯 PHP + SQLite
+* `symfony-mysql` - Symfony + MySQL
+* `symfony-postgres` - Symfony + PostgreSQL
+* `symfony-sqlite` - Symfony + SQLite
+* `yii2-mysql` - Yii2 + MySQL
+* `yii2-postgres` - Yii2 + PostgreSQL
+* `yii2-sqlite` - Yii2 + SQLite
+* `laravel-mysql` - Laravel + MySQL
+* `laravel-postgres` - Laravel + PostgreSQL
+* `laravel-sqlite` - Laravel + SQLite
+* `ruby-mysql` - Ruby on Rails + MySQL
+* `ruby-postgres` - Ruby on Rails + PostgreSQL
+* `ruby-sqlite` - Ruby on Rails + SQLite
+* `go-mysql` - Golang + MySQL
+* `go-postgres` - Golang + PostgreSQL
+* `go-sqlite` - Golang + SQLite

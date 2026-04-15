@@ -1,19 +1,23 @@
-# BOOK-STORAGE 🇵🇱
+# TODO-LIST 🇵🇱
 
 ## 🎯 Cel
 
-Stworzenie szablonu aplikacji internetowej z uwierzytelnianiem, rolami, logiką CRUD i środowiskiem Docker, który może być używany jako punkt startowy dla projektów wykorzystujących różne technologie.
+Stworzyć wzorcowy szablon aplikacji webowej z uwierzytelnianiem, rolami, logiką CRUD i środowiskiem Docker, który może być używany jako punkt startowy dla projektów w różnych technologiach.
 
-## 📖 Opis
+Szablon powinien mieć możliwie najprostszy model dziedzinowy: użytkownik zarządza listą swoich zadań. Pozwala to skupić się na typowej strukturze projektu, bezpieczeństwie, środowisku, migracjach, testach i idiomatycznej implementacji wybranego stosu, bez komplikowania modelu dziedzinowego.
 
-Strona internetowa z listą książek. Wymagane jest uwierzytelnianie i rejestracja użytkowników z potwierdzeniem e-mail. Modele (encje) — książka, autor, użytkownik. Nieuwierzytelnieni użytkownicy mogą przeglądać listy autorów i książek oraz ich szczegóły. Uwierzytelnieni użytkownicy mogą dodawać książki i autorów do ulubionych. Uwierzytelnieni użytkownicy z uprawnieniami administratora mogą dodawać nowych autorów, książki i użytkowników.
+## 📖 Przykładowy opis
+
+Strona z listą zadań. Potrzebne są uwierzytelnianie i rejestracja z wysyłaniem wiadomości e-mail. Modele (encje) - użytkownik i zadanie.
+
+Nieuwierzytelniony użytkownik może się zarejestrować, zalogować, potwierdzić e-mail i odzyskać hasło. Uwierzytelniony użytkownik może przeglądać, tworzyć, edytować, kończyć i usuwać swoje zadania. Uwierzytelniony użytkownik z uprawnieniami administratora może zarządzać użytkownikami i przeglądać zadania wszystkich użytkowników.
 
 ## ⚙️ Wymagania ogólne
 
 ### 🖥️ Backend
 
-Projekt jest zaimplementowany w wielu wariantach, z których każdy korzysta z tego samego modelu danych i logiki biznesowej, ale wykorzystuje idiomatyczne podejścia wybranego stosu technologicznego. Opcje implementacji:
-* Niestandardowy MVC w czystym PHP 8.5
+Projekt jest realizowany w kilku wariantach, z których każdy trzyma się tego samego modelu dziedzinowego i logiki biznesowej, ale używa idiomatycznego podejścia wybranego stosu technologicznego. Warianty implementacji:
+* Własny MVC w czystym PHP 8.5
 * Symfony
 * Laravel
 * Yii2
@@ -22,13 +26,13 @@ Projekt jest zaimplementowany w wielu wariantach, z których każdy korzysta z t
 
 ### 🐳 Platforma Docker Compose
 
-* `web` (wymagane: PHP / Ruby / Go)
-* `db` (opcjonalne: MySQL / PostgreSQL; SQLite nie wymaga osobnego kontenera)
-* `nginx` (wymagane)
-* `mailcatcher` (tylko dla środowiska deweloperskiego)
-* `redis` (opcjonalne, w razie potrzeby dla sesji / pamięci podręcznej)
+1. `web` (wymagane php/ruby/go)
+2. `db` (opcjonalnie mysql/postgres, ponieważ SQLite nie potrzebuje osobnego kontenera)
+3. `nginx` (wymagane)
+4. `mailcatcher` (tylko dla środowiska dev)
+5. `redis` (opcjonalnie w razie potrzeby, sesje/cache)
 
-### 🗄️ Baza danych (DBMS)
+### 🗄️ DBMS
 
 * MySQL / MariaDB
 * PostgreSQL
@@ -36,34 +40,43 @@ Projekt jest zaimplementowany w wielu wariantach, z których każdy korzysta z t
 
 ### 🌐 Frontend
 
-Renderowanie po stronie serwera (PHP / ERB / Twig / Blade / szablony Go), CSS bez narzędzi budowania, JavaScript tylko dla ulepszeń UX (bez SPA).
+Renderowanie po stronie serwera (PHP / ERB / Twig / Blade / Go templates), CSS bez narzędzi budowania, JavaScript tylko do ulepszeń UX (bez SPA).
 
 ### 🔒 Bezpieczeństwo
 
 * Rejestracja
-* Weryfikacja e-mail
+* Potwierdzenie e-mail
 * Rola administratora
 * Hashowanie haseł
-* Ochrona CSRF
+* CSRF
 * Ochrona XSS
-* Resetowanie hasła
-* Ograniczanie liczby żądań (rate-limiting)
+* Reset password
+* Rate-limit
+* Sprawdzanie przynależności zadań do użytkownika
 
-### ⭐ Ulubione
+### ✅ Zadania
 
-Uwierzytelnieni użytkownicy mogą zapisywać książki i autorów jako ulubione.
+Uwierzytelniony użytkownik może zarządzać tylko swoimi zadaniami:
+
+* przeglądać listę swoich zadań
+* tworzyć zadanie
+* edytować zadanie
+* oznaczać zadanie jako wykonane lub niewykonane
+* usuwać zadanie
 
 ### 🛠️ Panel administratora
 
-Operacje CRUD dla książek, autorów i użytkowników są dostępne tylko dla uwierzytelnionych użytkowników z uprawnieniami administratora.
+Operacje CRUD dla użytkowników są dostępne tylko dla uwierzytelnionego użytkownika z uprawnieniami administratora.
+
+Administrator może także przeglądać zadania wszystkich użytkowników. Edycja cudzych zadań przez panel administratora jest dopuszczalna w konkretnych implementacjach, jeśli jest to jasno odzwierciedlone w interfejsie i nie narusza bazowej logiki biznesowej.
 
 ## 📊 Struktura tabel bazy danych
 
-Podstawowa struktura bazy danych definiuje minimalnie wymagany model danych. W konkretnych implementacjach dozwolone są zmiany schematu wynikające z funkcji frameworka lub języka (na przykład system ról Symfony, wbudowane mechanizmy Laravel, konwencje Rails) lub specyfiki DBMS, pod warunkiem zachowania równoważnej logiki biznesowej.
+Podstawowa struktura bazy danych opisuje minimalny wymagany model dziedzinowy. W konkretnych implementacjach dopuszcza się zmiany schematu wynikające z cech frameworka, języka (na przykład system ról Symfony, wbudowane mechanizmy Laravel, konwencje Rails) lub DBMS, pod warunkiem zachowania równoważnej logiki biznesowej.
 
 ### `users`
 
-| Pole | Typ | Wymagane | Indeks / Ograniczenia |
+| Pole | Typ | Wymagane | Indeksy / ograniczenia |
 |---|---|---|---|
 | `id` | `BIGINT` / `UUID v7 BINARY` | tak | PK |
 | `email` | `VARCHAR(255)` | tak | UNIQUE |
@@ -76,89 +89,49 @@ Podstawowa struktura bazy danych definiuje minimalnie wymagany model danych. W k
 | `updated_at` | `TIMESTAMP` / `DATETIME_IMMUTABLE` | tak | - |
 
 #### Uwagi
+* `is_admin` to minimalistyczna alternatywa dla ról.
+* W Symfony/Laravel może zostać zastąpione mechanizmem ról.
+* Hasło - tylko hash, bez plaintext nawet "dla przykładu".
+* Jeśli framework zapewnia gotowy model użytkownika, można go użyć przy zachowaniu wymagań dotyczących rejestracji, potwierdzenia e-mail, odzyskiwania hasła i roli administratora.
 
-* `is_admin` to minimalna alternatywa dla systemu ról.
-* W Symfony / Laravel może zostać zastąpione mechanizmem ról.
-* Hasła muszą być przechowywane tylko jako hashe; hasła w postaci jawnej są niedozwolone.
+### `tasks`
 
-### `authors`
-
-| Pole | Typ | Wymagane | Indeks / Ograniczenia |
+| Pole | Typ | Wymagane | Indeksy / ograniczenia |
 |---|---|---|---|
 | `id` | `BIGINT` / `UUID v7 BINARY` | tak | PK |
-| `name` | `VARCHAR(255)` | tak | INDEX |
-| `created_at` | `TIMESTAMP` / `DATETIME_IMMUTABLE` | tak | INDEX |
-| `updated_at` | `TIMESTAMP` / `DATETIME_IMMUTABLE` | tak | - |
-
-### `books`
-
-| Pole | Typ | Wymagane | Indeks / Ograniczenia |
-|---|---|---|---|
-| `id` | `BIGINT` / `UUID v7 BINARY` | tak | PK |
+| `user_id` | `BIGINT` / `UUID v7 BINARY` | tak | FK + INDEX |
 | `title` | `VARCHAR(255)` | tak | INDEX |
-| `price` | `INTEGER` | tak | - |
-| `preview` | `TEXT` | nie | - |
+| `description` | `TEXT` | nie | - |
+| `is_completed` | `BOOLEAN` | tak | INDEX |
+| `due_at` | `TIMESTAMP` / `DATETIME_IMMUTABLE` | nie | INDEX |
 | `created_at` | `TIMESTAMP` / `DATETIME_IMMUTABLE` | tak | INDEX |
 | `updated_at` | `TIMESTAMP` / `DATETIME_IMMUTABLE` | tak | - |
 
-### `book_author_relations` (wiele do wielu)
-
-| Pole | Typ | Wymagane | Indeks / Ograniczenia |
-|---|---|---|---|
-| `book_id` | `BIGINT` / `UUID v7 BINARY` | tak | FK + INDEX |
-| `author_id` | `BIGINT` / `UUID v7 BINARY` | tak | FK + INDEX |
-
 #### Ograniczenia
 
-* PK (`book_id`, `author_id`)
-* UNIQUE (`book_id`, `author_id`)
-* ON DELETE CASCADE
-
-### `user_book_favs` (wiele do wielu)
-
-| Pole | Typ | Wymagane | Indeks / Ograniczenia |
-|---|---|---|---|
-| `book_id` | `BIGINT` / `UUID v7 BINARY` | tak | FK + INDEX |
-| `user_id` | `BIGINT` / `UUID v7 BINARY` | tak | FK + INDEX |
-
-#### Ograniczenia
-* PK (`book_id`, `user_id`)
-* UNIQUE (`book_id`, `user_id`)
-* ON DELETE CASCADE
-
-### `user_author_favs` (wiele do wielu)
-
-| Pole | Typ | Wymagane | Indeks / Ograniczenia |
-|---|---|---|---|
-| `author_id` | `BIGINT` / `UUID v7 BINARY` | tak | FK + INDEX |
-| `user_id` | `BIGINT` / `UUID v7 BINARY` | tak | FK + INDEX |
-
-#### Ograniczenia
-
-* PK (`user_id`, `author_id`)
-* UNIQUE (`user_id`, `author_id`)
+* FK (`user_id`) → `users.id`
 * ON DELETE CASCADE
 
 ## 📁 Repozytorium
 
-Każda gałąź repozytorium reprezentuje niezależny szablon projektu startowego, przeznaczony do bezpośredniego użycia w programowaniu. Gałąź master zawiera uogólnioną dokumentację opisującą koncepcje, wymagania i różnice między implementacjami.
+Każda gałąź repozytorium reprezentuje samodzielny startowy szablon projektu przeznaczony do bezpośredniego użycia w programowaniu. Gałąź master zawiera uogólnioną dokumentację opisującą koncepcje, wymagania i różnice między implementacjami.
 
-* `master` – dokumentacja
-* `php-mysql` – czysty PHP + MySQL
-* `php-postgres` – czysty PHP + PostgreSQL
-* `php-sqlite` – czysty PHP + SQLite
-* `symfony-mysql` – Symfony + MySQL
-* `symfony-postgres` – Symfony + PostgreSQL
-* `symfony-sqlite` – Symfony + SQLite
-* `yii2-mysql` – Yii2 + MySQL
-* `yii2-postgres` – Yii2 + PostgreSQL
-* `yii2-sqlite` – Yii2 + SQLite
-* `laravel-mysql` – Laravel + MySQL
-* `laravel-postgres` – Laravel + PostgreSQL
-* `laravel-sqlite` – Laravel + SQLite
-* `ruby-mysql` – Ruby on Rails + MySQL
-* `ruby-postgres` – Ruby on Rails + PostgreSQL
-* `ruby-sqlite` – Ruby on Rails + SQLite
-* `go-mysql` – Golang + MySQL
-* `go-postgres` – Golang + PostgreSQL
-* `go-sqlite` – Golang + SQLite
+* `master` - dokumentacja, opis
+* `php-mysql` - czysty PHP + MySQL
+* `php-postgres` - czysty PHP + PostgreSQL
+* `php-sqlite` - czysty PHP + SQLite
+* `symfony-mysql` - Symfony + MySQL
+* `symfony-postgres` - Symfony + PostgreSQL
+* `symfony-sqlite` - Symfony + SQLite
+* `yii2-mysql` - Yii2 + MySQL
+* `yii2-postgres` - Yii2 + PostgreSQL
+* `yii2-sqlite` - Yii2 + SQLite
+* `laravel-mysql` - Laravel + MySQL
+* `laravel-postgres` - Laravel + PostgreSQL
+* `laravel-sqlite` - Laravel + SQLite
+* `ruby-mysql` - Ruby on Rails + MySQL
+* `ruby-postgres` - Ruby on Rails + PostgreSQL
+* `ruby-sqlite` - Ruby on Rails + SQLite
+* `go-mysql` - Golang + MySQL
+* `go-postgres` - Golang + PostgreSQL
+* `go-sqlite` - Golang + SQLite
