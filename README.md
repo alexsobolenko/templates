@@ -1,62 +1,134 @@
-# TEMPLATES
+# TODO-LIST PHP + MySQL
 
-## One project, multiple implementations
+## 🚀 Create Project
 
-This repository contains reference starter templates for the same small web application implemented with different technology stacks and databases.
-
-The sample application is a TODO list with authentication, roles, CRUD logic, server-side rendering, and a Docker Compose development environment. The `master` branch contains the shared documentation, while each implementation lives in its own branch.
-
-## Usage
-
-Create a new project from the branch that matches the stack and database you need:
+Create a new project from this branch:
 
 ```bash
-git clone --branch php-sqlite --single-branch https://github.com/alexsobolenko/templates.git my-project
+git clone --branch php-mysql --single-branch https://github.com/alexsobolenko/templates.git my-project
 cd my-project
 ```
 
-Replace `php-sqlite` with another branch name, for example `symfony-postgres`, `laravel-mysql`, `ruby-sqlite`, or `go-postgres`.
-
-To keep the new project independent from this template repository:
+To make the new project independent from the template repository:
 
 ```bash
 rm -rf .git
 git init
 git add .
-git commit -m "Initial project from template"
+git commit -m "Initial commit"
 ```
 
-## Branches
+## 🎯 Goal
 
-* `master` - documentation, description
-* `php-mysql` - pure PHP + MySQL
-* `php-postgres` - pure PHP + PostgreSQL
-* `php-sqlite` - pure PHP + SQLite
-* `symfony-mysql` - Symfony + MySQL
-* `symfony-postgres` - Symfony + PostgreSQL
-* `symfony-sqlite` - Symfony + SQLite
-* `yii2-mysql` - Yii2 + MySQL
-* `yii2-postgres` - Yii2 + PostgreSQL
-* `yii2-sqlite` - Yii2 + SQLite
-* `laravel-mysql` - Laravel + MySQL
-* `laravel-postgres` - Laravel + PostgreSQL
-* `laravel-sqlite` - Laravel + SQLite
-* `ruby-mysql` - Ruby on Rails + MySQL
-* `ruby-postgres` - Ruby on Rails + PostgreSQL
-* `ruby-sqlite` - Ruby on Rails + SQLite
-* `go-mysql` - Golang + MySQL
-* `go-postgres` - Golang + PostgreSQL
-* `go-sqlite` - Golang + SQLite
+Create a simple reference web application template on pure PHP and MySQL with authentication, roles, CRUD logic, server-side rendering, and a Docker Compose development environment.
 
-## Documentation
+The template should have the simplest possible domain model: a user manages a list of their tasks. This makes it possible to focus on the typical project structure, security, routing, database access, migrations, tests, and plain PHP implementation without complicating the domain model.
 
-* 🇬🇧 [English](https://github.com/alexsobolenko/templates/blob/master/docs/en.md)
-* 🇷🇺 [Русский](https://github.com/alexsobolenko/templates/blob/master/docs/ru.md)
-* 🇪🇸 [Español](https://github.com/alexsobolenko/templates/blob/master/docs/es.md)
-* 🇨🇳 [中文](https://github.com/alexsobolenko/templates/blob/master/docs/zh.md)
-* 🇵🇱 [Polska](https://github.com/alexsobolenko/templates/blob/master/docs/pl.md)
-* 🇩🇪 [Deutsch](https://github.com/alexsobolenko/templates/blob/master/docs/de.md)
-* 🇫🇷 [Français](https://github.com/alexsobolenko/templates/blob/master/docs/fr.md)
-* 🇵🇹 [Português](https://github.com/alexsobolenko/templates/blob/master/docs/pt.md)
-* 🇰🇷 [한국어](https://github.com/alexsobolenko/templates/blob/master/docs/ko.md)
-* 🇯🇵 [日本語](https://github.com/alexsobolenko/templates/blob/master/docs/ja.md)
+## 📖 Overview
+
+A website with a list of tasks. Authentication and registration with email delivery are required. Models (entities) - user and task.
+
+An unauthenticated user can register, log in, verify their email, and reset their password. An authenticated user can view, create, edit, complete, and delete their own tasks. An authenticated user with administrator rights can manage users and view all users' tasks.
+
+## ⚙️ Technical Requirements
+
+### 🖥️ Backend
+
+The backend is implemented on pure PHP 8.5 without a full-stack framework.
+
+The project should stay small, but it must include the basic infrastructure expected from a real starter template:
+
+* a normal HTTP router
+* controllers or controller-like request handlers
+* a small PDO wrapper for database access
+* plain PHP views/templates without third-party template engines
+* simple middleware or equivalent request checks where useful
+* migrations or SQL schema files
+* seed data for development if useful
+
+### 🐳 Docker Compose Platform
+
+1. `web` (PHP)
+2. `db` (MySQL)
+3. `nginx`
+4. `mailcatcher` (dev environment only)
+
+Redis, queues, search engines, asset builders, and other additional infrastructure are intentionally out of scope for this branch.
+
+### 🗄️ Database
+
+* MySQL
+
+### 🌐 Frontend
+
+Server-side rendering with plain PHP templates. CSS without build tools. JavaScript only for small UX enhancements (no SPA).
+
+No Twig, Blade, Smarty, or other third-party template engines.
+
+### 🔒 Security
+
+* Registration
+* Email verification
+* Administrator role
+* Password hashing
+* CSRF
+* XSS protection
+* Reset password
+* Rate-limit
+* Checking task ownership by user
+
+### ✅ Tasks
+
+An authenticated user can manage only their own tasks:
+
+* view their task list
+* create a task
+* edit a task
+* mark a task as completed or not completed
+* delete a task
+
+### 🛠️ Admin Panel
+
+CRUD operations for users are available only to an authenticated user with administrator rights.
+
+The administrator can also view all users' tasks. Editing other users' tasks through the admin panel is allowed if this is clearly reflected in the interface and does not violate the base business logic.
+
+## 📊 Database Table Structure
+
+The base database structure defines the minimally required data model for this PHP + MySQL implementation.
+
+### `users`
+
+| Field | Type | Required | Indexes / Constraints |
+|---|---|---|---|
+| `id` | `INTEGER` | yes | PK, AUTO_INCREMENT |
+| `email` | `VARCHAR(255)` | yes | UNIQUE |
+| `password_hash` | `VARCHAR(255)` | yes | - |
+| `username` | `VARCHAR(100)` | yes | UNIQUE |
+| `is_admin` | `BOOLEAN` | yes | INDEX |
+| `email_verified_at` | `TIMESTAMP` | no | INDEX |
+| `verification_token` | `VARCHAR(255)` | no | INDEX |
+| `created_at` | `TIMESTAMP` | yes | INDEX |
+| `updated_at` | `TIMESTAMP` | yes | - |
+
+#### Notes
+* `is_admin` is a minimal alternative to a full roles system.
+* Passwords must be stored only as hashes, never as plaintext even "for an example".
+
+### `tasks`
+
+| Field | Type | Required | Indexes / Constraints |
+|---|---|---|---|
+| `id` | `INTEGER` | yes | PK, AUTO_INCREMENT |
+| `user_id` | `INTEGER` | yes | FK + INDEX |
+| `title` | `VARCHAR(255)` | yes | INDEX |
+| `description` | `TEXT` | no | - |
+| `is_completed` | `BOOLEAN` | yes | INDEX |
+| `due_at` | `TIMESTAMP` | no | INDEX |
+| `created_at` | `TIMESTAMP` | yes | INDEX |
+| `updated_at` | `TIMESTAMP` | yes | - |
+
+#### Constraints
+
+* FK (`user_id`) → `users.id`
+* ON DELETE CASCADE

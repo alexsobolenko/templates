@@ -1,1 +1,3 @@
 .codex
+.env.local
+.docker/mysql/data/
