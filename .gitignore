@@ -1,3 +1,10 @@
 .codex
 .env.local
 .docker/mysql/data/
+var/log/
+var/phpstan/
+var/phpcs/
+var/psalm/
+var/phpunit/
+vendor/
+.sentry-native/

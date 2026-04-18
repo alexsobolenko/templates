@@ -1,0 +1,25 @@
+{
+  "name": "alexsobolenko/todo-list-php-mysql",
+  "description": "Pure PHP and MySQL TODO list starter template.",
+  "type": "project",
+  "autoload": {
+    "psr-4": {
+      "App\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Tests\\": "tests/"
+    }
+  },
+  "require-dev": {
+    "phpstan/phpstan": "^2.1",
+    "phpunit/phpunit": "^12.2",
+    "squizlabs/php_codesniffer": "^3.10",
+    "vimeo/psalm": "^6.13"
+  },
+  "require": {
+    "php": "^8.5",
+    "psr/container": "^2.0"
+  }
+}

@@ -19,6 +19,7 @@ services:
         GROUP_ID: ${GROUP_ID:-1000}
         COMPOSER_VERSION: ${COMPOSER_VERSION:-2.9.5}
     restart: unless-stopped
+    command: sh -lc "composer dump-autoload --no-interaction && /usr/local/sbin/php-fpm"
     env_file:
       - path: .env
         required: true

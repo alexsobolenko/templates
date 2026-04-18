@@ -22,7 +22,7 @@ git commit -m "Initial commit"
 
 Create a simple reference web application template on pure PHP and MySQL with authentication, roles, CRUD logic, server-side rendering, and a Docker Compose development environment.
 
-The template should have the simplest possible domain model: a user manages a list of their tasks. This makes it possible to focus on the typical project structure, security, routing, database access, migrations, tests, and plain PHP implementation without complicating the domain model.
+The template should have the simplest possible domain model: a user manages a list of their tasks. This makes it possible to focus on the typical project structure, security, routing, database access, SQL schema initialization, tests, and plain PHP implementation without complicating the domain model.
 
 ## 📖 Overview
 
@@ -43,8 +43,25 @@ The project should stay small, but it must include the basic infrastructure expe
 * a small PDO wrapper for database access
 * plain PHP views/templates without third-party template engines
 * simple middleware or equivalent request checks where useful
-* migrations or SQL schema files
+* SQL schema files for initial database setup
 * seed data for development if useful
+
+## 🔎 Static Analysis
+
+The project uses:
+
+* `PHPStan`
+* `PHP_CodeSniffer`
+* `Psalm`
+* `PHPUnit`
+
+Typical commands:
+
+```bash
+composer install
+make lint
+make test
+```
 
 ### 🐳 Docker Compose Platform
 

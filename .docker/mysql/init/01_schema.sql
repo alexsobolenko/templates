@@ -2,6 +2,7 @@ CREATE TABLE IF NOT EXISTS `users` (
     `id` INTEGER AUTO_INCREMENT PRIMARY KEY,
     `email` VARCHAR(255) NOT NULL,
     `password_hash` VARCHAR(255) NOT NULL,
+    `username` VARCHAR(100) NOT NULL,
     `is_admin` BOOLEAN NOT NULL DEFAULT FALSE,
     `email_verified_at` TIMESTAMP NULL DEFAULT NULL,
     `verification_token` VARCHAR(255) NULL DEFAULT NULL,

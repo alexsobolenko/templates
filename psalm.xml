@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<psalm
+    errorLevel="4"
+    resolveFromConfigFile="true"
+    findUnusedCode="false"
+    cacheDirectory="var/psalm"
+>
+    <projectFiles>
+        <directory name="config"/>
+        <directory name="public"/>
+        <directory name="src"/>
+        <ignoreFiles>
+            <directory name="vendor"/>
+            <directory name="var"/>
+            <directory name="views"/>
+        </ignoreFiles>
+    </projectFiles>
+</psalm>
