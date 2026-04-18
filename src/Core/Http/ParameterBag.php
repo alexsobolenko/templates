@@ -10,7 +10,7 @@ final readonly class ParameterBag
      * @param array $data
      */
     public function __construct(
-        private array $data = [],
+        private array $data = []
     ) {}
 
     /**

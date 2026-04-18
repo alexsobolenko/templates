@@ -9,9 +9,10 @@ use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 
 #[Group('unit')]
-#[Group('http')]
+#[Group('unit.http')]
 final class ParameterBagTest extends TestCase
 {
+    #[Group('unit.http.get')]
     public function testReturnsExistingValue(): void
     {
         $bag = new ParameterBag([
@@ -21,6 +22,7 @@ final class ParameterBagTest extends TestCase
         self::assertSame('Test task', $bag->get('title'));
     }
 
+    #[Group('unit.http.get')]
     public function testReturnsDefaultValueWhenKeyIsMissing(): void
     {
         $bag = new ParameterBag();

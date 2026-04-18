@@ -19,7 +19,7 @@ final readonly class Logger
      */
     public function __construct(
         private string $filePath,
-        private string $minLevel = 'error',
+        private string $minLevel = 'error'
     ) {}
 
     /**

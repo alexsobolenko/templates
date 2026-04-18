@@ -22,7 +22,7 @@ final readonly class Response
     public function __construct(
         private string $content = '',
         private int $status = self::HTTP_OK,
-        private array $headers = [],
+        private array $headers = []
     ) {}
 
     /**
