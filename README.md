@@ -121,7 +121,6 @@ The base database structure defines the minimally required data model for this P
 | `id` | `INTEGER` | yes | PK, AUTO_INCREMENT |
 | `email` | `VARCHAR(255)` | yes | UNIQUE |
 | `password_hash` | `VARCHAR(255)` | yes | - |
-| `username` | `VARCHAR(100)` | yes | UNIQUE |
 | `is_admin` | `BOOLEAN` | yes | INDEX |
 | `email_verified_at` | `TIMESTAMP` | no | INDEX |
 | `verification_token` | `VARCHAR(255)` | no | INDEX |

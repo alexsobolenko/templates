@@ -148,7 +148,7 @@ docker compose exec web php -l src/Controller/SiteController.php
 
 - контейнер `web` при старте уже выполняет `composer dump-autoload`;
 - проект ожидает `.env` и опционально `.env.local`;
-- текущие ключи окружения: `APP_ENV`, `APP_DEBUG`, `NGINX_PORT`, `MYSQL_PORT`, `MYSQL_DATABASE`, `MYSQL_USER`, `MYSQL_PASSWORD`, `MYSQL_ROOT_PASSWORD`, `DB_HOST`, `DB_PORT`, `DB_DATABASE`, `DB_USERNAME`, `DB_PASSWORD`, `MAILPIT_WEB_PORT`, `MAILPIT_SMTP_PORT`, `MAIL_HOST`, `MAIL_PORT`, `USER_ID`, `GROUP_ID`, `COMPOSER_VERSION`.
+- текущие ключи окружения: `APP_ENV`, `APP_DEBUG`, `NGINX_PORT`, `MYSQL_PORT`, `MYSQL_DATABASE`, `MYSQL_USER`, `MYSQL_PASSWORD`, `MYSQL_ROOT_PASSWORD`, `DB_HOST`, `DB_PORT`, `DB_DATABASE`, `DB_USERNAME`, `DB_PASSWORD`, `MAILPIT_WEB_PORT`, `MAILPIT_SMTP_PORT`, `MAILER_DSN`, `MAIL_FROM_ADDRESS`, `MAIL_FROM_NAME`, `USER_ID`, `GROUP_ID`, `COMPOSER_VERSION`.
 - `.env.example` не является обязательной частью этого репозитория и не должен считаться "отсутствующей проблемой", пока вы явно не попросите его добавить.
 - Для статанализа используются `Makefile`, `phpstan.neon`, `phpcs.xml` и `psalm.xml`; при изменении структуры проекта их нужно держать в актуальном состоянии.
 - Для тестов используются `phpunit.xml`, каталог `tests/`, отдельная БД `todo_list_test` и SQL-фикстуры; изменять этот контур нужно осознанно и синхронно.

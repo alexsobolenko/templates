@@ -2,6 +2,9 @@
 
 declare(strict_types=1);
 
+use App\Core\App;
+use App\Core\Service\Mailer;
+
 /*
  * Service definitions for the application container.
  *
@@ -12,4 +15,11 @@ declare(strict_types=1);
  */
 
 return [
+    Mailer::class => [
+        'arguments' => [
+            'dsn' => (string) App::env('MAILER_DSN', ''),
+            'fromAddress' => (string) App::env('MAIL_FROM_ADDRESS', ''),
+            'fromName' => App::env('MAIL_FROM_NAME'),
+        ],
+    ],
 ];

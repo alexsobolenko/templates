@@ -21,9 +21,6 @@ final class User extends AbstractModel
     #[Column('password_hash', required: true)]
     public string $passwordHash;
 
-    #[Column('username', required: true)]
-    public string $username;
-
     #[Column('is_admin', type: ColumnType::Boolean)]
     public bool $isAdmin = false;
 

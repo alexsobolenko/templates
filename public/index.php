@@ -13,6 +13,10 @@ use App\Core\Service\ExceptionHandler;
 
 require dirname(__DIR__) . '/vendor/autoload.php';
 
+if (session_status() !== PHP_SESSION_ACTIVE) {
+    session_start();
+}
+
 $rootPath = dirname(__DIR__);
 $config = new Config($rootPath . '/config');
 $container = new Container();
